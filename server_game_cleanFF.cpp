@@ -65,12 +65,10 @@ const int PORT = 9000;   // номер порта сервера (как в пр
 //  ЗОНА СТУДЕНТА — здесь пишется логика вашего варианта
 // =====================================================================
 
-// Счётчики ходов игрока
 int rockCount = 0;
 int paperCount = 0;
 int scissorsCount = 0;
 
-// Возвращает название выбранного хода
 string moveName(int move)
 {
     if (move == 1) return "Rock";
@@ -78,8 +76,7 @@ string moveName(int move)
     return "Scissors";
 }
 
-// Вызывается один раз, когда подключился новый клиент.
-// Здесь сбрасываем счётчики игры и отправляем приветствие.
+
 string onConnect()
 {
     rockCount = 0;
@@ -91,11 +88,8 @@ string onConnect()
            "Enter QUIT to exit.";
 }
 
-// Вызывается на КАЖДУЮ команду клиента.
-// Обрабатываем ход игрока и возвращаем результат раунда.
 string handle(const string& command)
 {
-    // Проверяем правильность команды
     if (command != "1" && command != "2" && command != "3") {
         return "ERROR: Enter 1, 2, or 3.";
     }
@@ -103,8 +97,6 @@ string handle(const string& command)
     int playerMove = command[0] - '0';
     int serverMove;
 
-    // Если игрок три раза подряд выбирал один и тот же ход,
-    // сервер выбирает ход, который его побеждает.
     if (playerMove == 1 && rockCount >= 3) {
         serverMove = 2;
         rockCount = 0;
@@ -118,7 +110,6 @@ string handle(const string& command)
         scissorsCount = 0;
     }
     else {
-        // В остальных случаях сервер выбирает случайный ход
         serverMove = rand() % 3 + 1;
     }
 
